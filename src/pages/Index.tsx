@@ -1,16 +1,15 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+/**
+ * Tila Digitals — 2026 Landing Page
+ * Renders ONLY the Header and Hero Section.
+ */
+import Header from "@/components/Header";
+import Hero from "@/components/Hero";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
-  return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
-    </div>
-  );
-};
-
-const Index = PlaceholderIndex;
+const Index = () => (
+  <main className="bg-background min-h-screen">
+    <Header />
+    <Hero />
+  </main>
+);
 
 export default Index;
