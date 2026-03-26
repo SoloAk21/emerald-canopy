@@ -1,28 +1,32 @@
 /**
- * Tila Digitals — 2026 Hyper-Detailed Fixed Header/Navbar
- * 
+ * Tila Digitals — 2026 Header (Icon‑free Navigation)
+ *
  * Features:
  * - Transparent → emerald-950/90 on scroll (>30px threshold)
  * - Holographic bottom border glow on scroll
  * - Magnetic CTA button with spring physics
  * - Morphing hamburger → X for mobile
- * - Full-screen mobile menu with staggered links
+ * - Full-screen mobile menu with staggered links (text‑only)
  */
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useSpring, useMotionValue } from "framer-motion";
-import { Umbrella, Play, Menu, X, Shield, Zap, BarChart3, Briefcase, Phone } from "lucide-react";
+import {
+  motion,
+  AnimatePresence,
+  useSpring,
+  useMotionValue,
+} from "framer-motion";
+import { Umbrella, Play, Menu, X } from "lucide-react";
 
-/* Nav link data with corresponding Lucide icons */
-const NAV_LINKS = [
-  { label: "Shield", icon: Shield },
-  { label: "Amplify", icon: Zap },
-  { label: "Insights", icon: BarChart3 },
-  { label: "Work", icon: Briefcase },
-  { label: "Connect", icon: Phone },
-];
+/* Nav link data – text only (icons removed) */
+const NAV_LINKS = ["Shield", "Amplify", "Insights", "Work", "Connect"];
 
 /* 2026 spring config: buttery smooth, slight overshoot */
-const SPRING = { type: "spring" as const, stiffness: 200, damping: 25, mass: 0.8 };
+const SPRING = {
+  type: "spring" as const,
+  stiffness: 200,
+  damping: 25,
+  mass: 0.8,
+};
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -39,7 +43,9 @@ export default function Header() {
   /* Lock body scroll when mobile menu is open */
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [mobileOpen]);
 
   return (
@@ -59,24 +65,25 @@ export default function Header() {
         <motion.div
           className="absolute bottom-0 left-0 right-0 h-px"
           style={{
-            background: "linear-gradient(90deg, transparent, rgba(52,211,153,0.3), transparent)",
+            background:
+              "linear-gradient(90deg, transparent, rgba(52,211,153,0.3), transparent)",
           }}
           animate={{ opacity: scrolled ? 1 : 0 }}
           transition={{ duration: 0.5 }}
         />
 
         <div className="container mx-auto h-full flex items-center justify-between px-5 lg:px-8">
-          {/* === Logo === */}
+          {/* === Logo (keeps icon) === */}
           <LogoBlock />
 
-          {/* === Desktop Nav Links (center) === */}
+          {/* === Desktop Nav Links (text‑only) === */}
           <nav className="hidden lg:flex items-center gap-1">
-            {NAV_LINKS.map((link) => (
+            {NAV_LINKS.map((label) => (
               <NavLink
-                key={link.label}
-                label={link.label}
-                isActive={activeLink === link.label}
-                onClick={() => setActiveLink(link.label)}
+                key={label}
+                label={label}
+                isActive={activeLink === label}
+                onClick={() => setActiveLink(label)}
               />
             ))}
           </nav>
@@ -91,11 +98,23 @@ export default function Header() {
             >
               <AnimatePresence mode="wait">
                 {mobileOpen ? (
-                  <motion.div key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={SPRING}>
+                  <motion.div
+                    key="x"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={SPRING}
+                  >
                     <X className="text-emerald-400" size={24} />
                   </motion.div>
                 ) : (
-                  <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={SPRING}>
+                  <motion.div
+                    key="menu"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={SPRING}
+                  >
                     <Menu className="text-foreground" size={24} />
                   </motion.div>
                 )}
@@ -105,29 +124,34 @@ export default function Header() {
         </div>
       </motion.header>
 
-      {/* === Mobile Menu Overlay === */}
+      {/* === Mobile Menu Overlay (text‑only links) === */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
             className="fixed inset-0 z-40 flex flex-col items-center justify-center"
-            style={{ backgroundColor: "rgba(10,47,42,0.97)", backdropFilter: "blur(30px)" }}
+            style={{
+              backgroundColor: "rgba(10,47,42,0.97)",
+              backdropFilter: "blur(30px)",
+            }}
             initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -30 }}
             transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
           >
             <nav className="flex flex-col items-center gap-6 mt-20">
-              {NAV_LINKS.map((link, i) => (
+              {NAV_LINKS.map((label, i) => (
                 <motion.button
-                  key={link.label}
-                  className="text-3xl font-semibold text-foreground tracking-tight hover:text-emerald-400 transition-colors flex items-center gap-3"
+                  key={label}
+                  className="text-3xl font-semibold text-foreground tracking-tight hover:text-emerald-400 transition-colors"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 + i * 0.07, ...SPRING }}
-                  onClick={() => { setActiveLink(link.label); setMobileOpen(false); }}
+                  onClick={() => {
+                    setActiveLink(label);
+                    setMobileOpen(false);
+                  }}
                 >
-                  <link.icon size={20} className="text-emerald-400 opacity-50" />
-                  {link.label}
+                  {label}
                 </motion.button>
               ))}
             </nav>
@@ -160,7 +184,7 @@ export default function Header() {
   );
 }
 
-/* === Logo with hover animation === */
+/* === Logo with hover animation (keeps umbrella icon) === */
 function LogoBlock() {
   const [hovered, setHovered] = useState(false);
 
@@ -179,14 +203,26 @@ function LogoBlock() {
       >
         <Umbrella className="text-emerald-400" size={28} strokeWidth={2.5} />
       </motion.div>
-      <span className="text-emerald-400 font-black text-2xl lg:text-3xl tracking-[-2px]">Tila</span>
-      <span className="text-foreground font-black text-2xl lg:text-3xl tracking-[-2px]">Digitals</span>
+      <span className="text-emerald-400 font-black text-2xl lg:text-3xl tracking-[-2px]">
+        Tila
+      </span>
+      <span className="text-foreground font-black text-2xl lg:text-3xl tracking-[-2px]">
+        Digitals
+      </span>
     </motion.div>
   );
 }
 
-/* === Individual nav link with holographic underline === */
-function NavLink({ label, isActive, onClick }: { label: string; isActive: boolean; onClick: () => void }) {
+/* === Individual nav link with holographic underline (text‑only) === */
+function NavLink({
+  label,
+  isActive,
+  onClick,
+}: {
+  label: string;
+  isActive: boolean;
+  onClick: () => void;
+}) {
   return (
     <button
       onClick={onClick}
@@ -197,7 +233,11 @@ function NavLink({ label, isActive, onClick }: { label: string; isActive: boolea
       {/* Holographic underline */}
       <motion.span
         className="absolute bottom-0 left-1/2 h-[2px] rounded-full"
-        style={{ background: "linear-gradient(90deg, transparent, #34d399, transparent)", x: "-50%" }}
+        style={{
+          background:
+            "linear-gradient(90deg, transparent, #34d399, transparent)",
+          x: "-50%",
+        }}
         initial={false}
         animate={{ width: isActive ? "60%" : "0%", opacity: isActive ? 1 : 0 }}
         whileHover={{ width: "60%", opacity: 1 }}
@@ -216,7 +256,7 @@ function NavLink({ label, isActive, onClick }: { label: string; isActive: boolea
   );
 }
 
-/* === Magnetic CTA Button with spring physics === */
+/* === Magnetic CTA Button with spring physics (no icon) === */
 function MagneticButton() {
   const ref = useRef<HTMLButtonElement>(null);
   const x = useMotionValue(0);
@@ -229,12 +269,14 @@ function MagneticButton() {
     const rect = ref.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    /* Magnetic pull: button follows cursor at 25% intensity */
     x.set((e.clientX - centerX) * 0.25);
     y.set((e.clientY - centerY) * 0.25);
   };
 
-  const handleMouseLeave = () => { x.set(0); y.set(0); };
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   return (
     <motion.button
