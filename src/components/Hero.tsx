@@ -1,251 +1,236 @@
 import { useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useSpring,
-  useInView,
-} from "framer-motion";
-import {
-  Instagram,
-  Twitter,
-  Music2,
-  Play,
-  Star,
-  Youtube,
-  Send,
-  MessageCircle,
-} from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-const SPRING = {
-  type: "spring" as const,
-  stiffness: 200,
-  damping: 25,
-  mass: 0.8,
-};
+interface HeroProps {
+  onContactClick: () => void;
+  onVideoClick: () => void;
+}
 
-/* Social media links – replaces the metric orbs */
-const SOCIAL_LINKS = [
-  {
-    name: "Telegram",
-    url: "https://t.me/yourhandle",
-    icon: Send,
-    label: "Telegram",
-  },
-  {
-    name: "WhatsApp",
-    url: "https://wa.me/1234567890",
-    icon: MessageCircle,
-    label: "WhatsApp",
-  },
-  {
-    name: "YouTube",
-    url: "https://youtube.com/@yourchannel",
-    icon: Youtube,
-    label: "YouTube",
-  },
-  {
-    name: "Instagram",
-    url: "https://instagram.com/yourhandle",
-    icon: Instagram,
-    label: "Instagram",
-  },
-  {
-    name: "Twitter",
-    url: "https://twitter.com/yourhandle",
-    icon: Twitter,
-    label: "Twitter",
-  },
-  {
-    name: "TikTok",
-    url: "https://tiktok.com/@yourhandle",
-    icon: Music2,
-    label: "TikTok",
-  },
-];
-
-/* Trust items – unchanged */
-const TRUST_ITEMS = [
-  "Trusted by 62 brands",
-  "5.0 rating",
-  "Addis 2026 Tech Report",
-];
-
-export default function Hero() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(contentRef, { once: true, amount: 0.2 });
-
+export default function Hero({ onContactClick, onVideoClick }: HeroProps) {
+  const { t } = useLanguage();
+  const ref = useRef(null);
   const { scrollY } = useScroll();
-  const bgY = useTransform(scrollY, [0, 800], [0, 150]);
-  const springBgY = useSpring(bgY, { stiffness: 50, damping: 20 });
-  const panelY = useTransform(scrollY, [0, 400], [0, -30]);
+  const y = useTransform(scrollY, [0, 500], [0, 80]);
+
+  // Smooth scroll to services section
+  const handleStartClick = () => {
+    const servicesSection = document.getElementById("services");
+    if (servicesSection) {
+      servicesSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  // Smooth scroll to about/why choose us section
+  const handleMoreClick = () => {
+    const whyChooseUsSection = document.getElementById("why-choose-us");
+    if (whyChooseUsSection) {
+      whyChooseUsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   return (
     <section
-      ref={containerRef}
-      className="relative h-screen w-full overflow-hidden"
+      ref={ref}
+      className="relative h-screen w-full overflow-hidden text-white"
+      style={{ fontFamily: "'Nokia', system-ui, sans-serif" }}
     >
-      {/* Background with Parallax */}
-      <motion.div className="absolute inset-0 z-0" style={{ y: springBgY }}>
+      {/* Background */}
+      <motion.div style={{ y }} className="absolute inset-0">
         <img
           src="/hero-bg.png"
-          alt="Person under emerald umbrella holding glowing smartphone — Tila Digitals brand imagery"
-          className="w-full h-[120%] object-cover object-center"
-          width={1920}
-          height={1080}
+          alt="background"
+          className="w-full h-full object-cover"
         />
       </motion.div>
 
-      {/* Overlay gradient */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-emerald-950/40 via-emerald-950/20 to-emerald-950/60" />
-
-      {/* Digital rain particles (no shadow) */}
-      <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden opacity-[0.06]">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-px bg-emerald-400"
-            style={{
-              left: `${5 + i * 4.8}%`,
-              height: `${60 + Math.random() * 80}px`,
-              top: `-${Math.random() * 20}%`,
-              animation: `digital-rain ${3 + Math.random() * 4}s linear ${Math.random() * 3}s infinite`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Main Content */}
-      <div className="relative z-10 h-full flex items-center px-4 sm:px-6 lg:px-8">
-        <motion.div
-          ref={contentRef}
-          className="p-6 sm:p-8 md:p-10 lg:p-12 w-full max-w-7xl mx-auto"
-          style={{ y: panelY }}
-          initial={{ opacity: 0, x: 40 }}
-          animate={isInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-        >
-          {/* Headline */}
+      {/* Content */}
+      <div className="relative z-10 flex items-center h-full px-6 lg:px-20">
+        <div className="max-w-5xl">
+          {/* Heading with Detailed Lighter Black Shadows */}
           <motion.h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[82px] 2xl:text-[96px] font-black leading-[1.05] sm:leading-[0.98] tracking-[-2px] sm:tracking-[-3px] lg:tracking-[-4px] xl:tracking-[-5px] text-foreground mb-3 sm:mb-4"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.3, duration: 0.8 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="relative text-[2.1rem] sm:text-5xl md:text-7xl lg:text-8xl font-semibold leading-[0.95] tracking-[-0.03em] whitespace-pre-line"
           >
-            <motion.span
-              className="block"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.4, ...SPRING }}
+            {/* Main Gradient Text */}
+            <span className="relative z-20 bg-gradient-to-r from-white via-emerald-300 to-white bg-[length:200%_auto] bg-clip-text text-transparent animate-gradient">
+              {t("hero.title")}
+            </span>
+
+            {/* Layer 1: Outer glow shadow - lighter black */}
+            <span className="absolute inset-0 z-10 text-transparent [text-shadow:0_0_30px_rgba(0,0,0,0.15),0_0_60px_rgba(0,0,0,0.08),0_0_90px_rgba(0,0,0,0.04)]">
+              {t("hero.title")}
+            </span>
+
+            {/* Layer 2: Deep blur shadow - lighter black */}
+            <span className="absolute inset-0 z-0 blur-[20px] opacity-20 bg-gradient-to-r from-black/30 via-black/20 to-black/30 bg-clip-text text-transparent">
+              {t("hero.title")}
+            </span>
+
+            {/* Layer 3: Soft spread shadow - very light black */}
+            <span className="absolute inset-0 z-0 text-transparent [text-shadow:0_10px_30px_rgba(0,0,0,0.15),0_20px_40px_rgba(0,0,0,0.08)]">
+              {t("hero.title")}
+            </span>
+
+            {/* Layer 4: Directional shadow - bottom right - light */}
+            <span className="absolute inset-0 z-0 translate-x-[3px] translate-y-[3px] text-transparent [text-shadow:0_1px_2px_rgba(0,0,0,0.15)] opacity-60">
+              {t("hero.title")}
+            </span>
+
+            {/* Layer 5: Directional shadow - bottom left - lighter */}
+            <span className="absolute inset-0 z-0 translate-x-[-2px] translate-y-[2px] text-transparent [text-shadow:0_1px_1px_rgba(0,0,0,0.1)] opacity-40">
+              {t("hero.title")}
+            </span>
+
+            {/* Layer 6: Deep dark shadow for depth - softened */}
+            <span className="absolute inset-0 z-0 translate-y-[4px] text-transparent [text-shadow:0_4px_8px_rgba(0,0,0,0.12)] opacity-50">
+              {t("hero.title")}
+            </span>
+
+            {/* Layer 7: Subtle black shadow from gradient */}
+            <span className="absolute inset-0 z-0 blur-[3px] bg-gradient-to-r from-black/20 via-black/10 to-black/20 bg-clip-text text-transparent">
+              {t("hero.title")}
+            </span>
+
+            {/* Layer 8: Multiple text-shadows combined - lighter black layers */}
+            <span
+              className="absolute inset-0 z-0 text-transparent"
+              style={{
+                textShadow: `
+                0 1px 0 rgba(0,0,0,0.08),
+                0 2px 0 rgba(0,0,0,0.06),
+                0 3px 0 rgba(0,0,0,0.04),
+                0 4px 0 rgba(0,0,0,0.02),
+                0 5px 10px rgba(0,0,0,0.08),
+                0 10px 20px rgba(0,0,0,0.06),
+                0 15px 30px rgba(0,0,0,0.04),
+                0 20px 40px rgba(0,0,0,0.02)
+              `,
+              }}
             >
-              Umbrella.
-            </motion.span>
-            <motion.span
-              className="block text-gradient-holo leading-tight"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.6, ...SPRING }}
-            >
-              Your Digital Storm.
-            </motion.span>
+              {t("hero.title")}
+            </span>
+
+            {/* Layer 9: Soft black glow effect */}
+            <span className="absolute inset-0 z-0 blur-[12px] opacity-15 bg-gradient-to-r from-black/40 via-black/20 to-black/40 bg-clip-text text-transparent">
+              {t("hero.title")}
+            </span>
+
+            {/* Layer 10: Subtle black highlight */}
+            <span className="absolute inset-0 z-0 blur-[8px] opacity-10 text-black">
+              {t("hero.title")}
+            </span>
+
+            {/* Existing decorative layers preserved */}
+            <span className="absolute inset-0 blur-[6px] opacity-30 bg-gradient-to-r from-white via-emerald-300 to-white bg-clip-text text-transparent">
+              {t("hero.title")}
+            </span>
+            <span className="absolute inset-0 text-transparent [-webkit-text-stroke:0.8px_rgba(255,255,255,0.25)]">
+              {t("hero.title")}
+            </span>
+            <span className="absolute inset-0 translate-x-[0.5px] translate-y-[0.5px] text-transparent [-webkit-text-stroke:0.6px_rgba(255,255,255,0.18)]" />
+            <span className="absolute inset-0 translate-x-[1px] translate-y-[1px] text-transparent [-webkit-text-stroke:0.5px_rgba(255,255,255,0.12)]" />
+            <span className="absolute inset-0 translate-x-[1.5px] translate-y-[1.5px] text-transparent [-webkit-text-stroke:0.4px_rgba(255,255,255,0.08)]" />
+            <span className="absolute inset-0 translate-x-[2px] translate-y-[2px] text-black/10 blur-[1px]">
+              {t("hero.title")}
+            </span>
+            <span className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-transparent bg-clip-text text-transparent opacity-60">
+              {t("hero.title")}
+            </span>
           </motion.h1>
 
-          {/* Subheadline */}
+          {/* Subtext with lighter shadow */}
           <motion.p
-            className="text-base sm:text-lg md:text-xl lg:text-2xl font-medium leading-snug sm:leading-[1.3] max-w-2xl mb-6 sm:mb-8 text-foreground/80"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.7, ...SPRING }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="mt-6 text-white/80 text-base max-w-xl leading-relaxed [text-shadow:0_2px_4px_rgba(0,0,0,0.1)]"
           >
-            Shield your brand from chaos. Amplify every scroll.
+            {t("hero.subtitle")}
           </motion.p>
 
-          {/* Social Media Row – replaces the metric orbs */}
+          {/* Actions */}
           <motion.div
-            className="flex flex-wrap justify-center gap-4 sm:gap-5 mb-6 sm:mb-8"
-            initial={{ opacity: 0, y: 10 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.8, ...SPRING }}
-          >
-            {SOCIAL_LINKS.map((social) => (
-              <motion.a
-                key={social.name}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-foreground/70 hover:text-emerald-400 transition-colors px-3 py-2 rounded-full backdrop-blur-sm"
-                style={{
-                  background: "rgba(52,211,153,0.05)",
-                  border: "1px solid rgba(52,211,153,0.2)",
-                }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                transition={SPRING}
-                aria-label={social.label}
-              >
-                <social.icon size={18} />
-                <span className="text-xs sm:text-sm font-medium hidden sm:inline">
-                  {social.name}
-                </span>
-              </motion.a>
-            ))}
-          </motion.div>
-
-          {/* CTA Row */}
-          <motion.div
-            className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-5 sm:mb-6"
             initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.9, ...SPRING }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mt-10 flex items-center gap-4 flex-wrap"
           >
+            {/* Primary CTA - Get Started */}
             <motion.button
-              className="relative flex items-center justify-center gap-2 bg-emerald-600 text-foreground px-6 sm:px-8 lg:px-12 py-4 sm:py-5 lg:py-6 rounded-2xl sm:rounded-3xl font-semibold text-base sm:text-lg lg:text-xl w-full sm:w-auto overflow-hidden group"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
-              transition={SPRING}
+              onClick={handleStartClick}
+              className="px-6 py-3 bg-white text-black text-sm sm:text-base font-medium flex items-center gap-2 transition-all duration-200 shadow-md hover:shadow-lg"
+              style={{ borderRadius: 0 }}
+              whileHover={{ scale: 0.97 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <span className="absolute inset-[2px] rounded-2xl sm:rounded-3xl border border-emerald-300/20 pointer-events-none" />
-              Activate Shield
+              {t("hero.cta_start")}
+              <ArrowRight size={16} />
             </motion.button>
 
+            {/* Secondary CTA - Learn More */}
             <motion.button
-              className="flex items-center justify-center gap-2 px-6 sm:px-8 lg:px-12 py-4 sm:py-5 lg:py-6 rounded-2xl sm:rounded-3xl font-semibold text-base sm:text-lg lg:text-xl border-2 border-emerald-400/40 text-emerald-300 hover:border-emerald-400 transition-colors w-full sm:w-auto group"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
-              transition={SPRING}
+              onClick={handleMoreClick}
+              className="px-6 py-3 border border-white/20 text-sm sm:text-base text-white/70 hover:text-white hover:border-white/40 transition-all duration-200 backdrop-blur-sm"
+              style={{ borderRadius: 0 }}
+              whileHover={{ scale: 0.97 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <Play
-                size={18}
-                className="group-hover:scale-110 transition-transform"
-              />
-              See Demo
+              {t("hero.cta_more")}
+            </motion.button>
+
+            {/* Video CTA */}
+            <motion.button
+              onClick={onVideoClick}
+              className="px-6 py-3 text-sm sm:text-base text-white/70 hover:text-white transition-all duration-200 flex items-center gap-2 backdrop-blur-sm"
+              style={{ borderRadius: 0 }}
+              whileHover={{ scale: 0.97 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5 3L19 12L5 21V3Z"
+                  fill="currentColor"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Watch Demo
             </motion.button>
           </motion.div>
-
-          {/* Trust Line */}
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-muted-foreground">
-            {TRUST_ITEMS.map((item, i) => (
-              <motion.span
-                key={item}
-                className="flex items-center gap-1"
-                initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : {}}
-                transition={{ delay: 1.1 + i * 0.15 }}
-              >
-                {i > 0 && <span className="text-emerald-400/40 mr-1">•</span>}
-                {i === 1 && (
-                  <Star
-                    size={10}
-                    className="text-emerald-400 fill-emerald-400"
-                  />
-                )}
-                {item}
-              </motion.span>
-            ))}
-          </div>
-        </motion.div>
+        </div>
       </div>
+
+      <style>{`
+        @keyframes gradient {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        .animate-gradient {
+          animation: gradient 3s ease infinite;
+          background-size: 200% auto;
+        }
+        
+        /* Additional shadow animation */
+        @keyframes shadowPulse {
+          0%, 100% {
+            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.08));
+          }
+          50% {
+            filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.12));
+          }
+        }
+      `}</style>
     </section>
   );
 }

@@ -4,41 +4,59 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Nokia Font Face Declarations */
+@font-face {
+  font-family: "Nokia";
+  src: url("/src/assets/fonts/nokia/Nokia-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nokia";
+  src: url("/src/assets/fonts/nokia/Nokia-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   :root {
     /* === Tila Digitals 2026 Design System === */
-    --background: 160 55% 11%;
+    /* Exact HSL for #023934 is 174 93% 11% */
+    --background: 00 0% 0%;
     --foreground: 0 0% 100%;
 
-    --card: 160 55% 11%;
+    --card: 174 93% 11%;
     --card-foreground: 0 0% 100%;
 
-    --popover: 160 55% 11%;
+    --popover: 174 93% 11%;
     --popover-foreground: 0 0% 100%;
 
     --primary: 160 84% 39%;
-    --primary-foreground: 160 55% 11%;
+    --primary-foreground: 174 93% 11%;
 
-    --secondary: 160 41% 27%;
+    --secondary: 174 41% 27%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 160 30% 18%;
-    --muted-foreground: 160 10% 70%;
+    --muted: 174 30% 18%;
+    --muted-foreground: 174 10% 70%;
 
     --accent: 160 76% 52%;
-    --accent-foreground: 160 55% 11%;
+    --accent-foreground: 174 93% 11%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 160 20% 25%;
-    --input: 160 20% 25%;
+    --border: 174 20% 25%;
+    --input: 174 20% 25%;
     --ring: 160 84% 39%;
 
     --radius: 0.75rem;
 
     /* Custom emerald palette */
-    --emerald-950: 163 55% 11%;
+    --emerald-950: 174 93% 11%;
     --emerald-800: 173 77% 25%;
     --emerald-600: 160 84% 39%;
     --emerald-400: 160 67% 52%;
@@ -46,39 +64,67 @@
     --neon-emerald: 156 100% 75%;
 
     /* Glassmorphism tokens */
-    --glass-bg: 160 55% 11% / 0.6;
+    --glass-bg: 174 93% 11% / 0.6;
     --glass-border: 0 0% 100% / 0.08;
     --glow-emerald: 160 84% 39% / 0.3;
 
-    --sidebar-background: 160 55% 11%;
+    --sidebar-background: 174 93% 11%;
     --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 160 84% 39%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 160 30% 18%;
+    --sidebar-accent: 174 30% 18%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 160 20% 25%;
+    --sidebar-border: 174 20% 25%;
     --sidebar-ring: 160 84% 39%;
   }
-}
 
-@layer base {
+  html {
+    background-color: hsl(var(--background));
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  /* Language Font Logic */
+  [lang="am"] {
+    --font-family-primary:
+      "Nokia", "Inter", system-ui, -apple-system, sans-serif;
+  }
+
+  [lang="en"] {
+    --font-family-primary: "Inter", system-ui, -apple-system, sans-serif;
+  }
+
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground;
-    font-family:
+    @apply bg-background text-foreground antialiased;
+    font-family: var(
+      --font-family-primary,
       "Inter",
       system-ui,
       -apple-system,
-      sans-serif;
+      sans-serif
+    );
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  /* Amharic text adjustments */
+  [lang="am"] {
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+  }
+
+  [lang="am"] p,
+  [lang="am"] span:not([class*="text-"]) {
+    font-weight: 400;
+  }
 }
 
-/* 2026 Holographic shimmer keyframe */
+/* Animations */
 @keyframes shimmer {
   0% {
     background-position: -200% center;
@@ -108,32 +154,6 @@
   }
 }
 
-@keyframes draw-line {
-  0% {
-    stroke-dashoffset: 100;
-  }
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes digital-rain {
-  0% {
-    transform: translateY(-10%);
-    opacity: 0;
-  }
-  10% {
-    opacity: 0.4;
-  }
-  90% {
-    opacity: 0.4;
-  }
-  100% {
-    transform: translateY(110%);
-    opacity: 0;
-  }
-}
-
 @layer utilities {
   .text-gradient-holo {
     @apply bg-clip-text text-transparent;
@@ -144,30 +164,103 @@
       hsl(0 0% 100%)
     );
   }
-  .glass-panel {
-    backdrop-filter: blur(40px) saturate(1.8);
-    background: hsl(var(--glass-bg));
-    border: 1px solid hsl(var(--glass-border));
-  }
-  .glow-border {
-    box-shadow:
-      inset 0 0 20px hsl(var(--glow-emerald)),
-      0 0 40px hsl(var(--glow-emerald));
-  }
-  .animate-shimmer {
-    animation: shimmer 3s ease-in-out infinite;
-    background-size: 200% 100%;
-  }
-  .animate-float {
-    animation: float 4s ease-in-out infinite;
-  }
-  .animate-pulse-glow {
-    animation: pulse-glow 3s ease-in-out infinite;
-  }
 
   .glass-panel {
     backdrop-filter: blur(40px) saturate(1.8);
     background: hsl(var(--glass-bg));
     border: 1px solid hsl(var(--glass-border));
   }
+
+  .glow-border {
+    box-shadow:
+      inset 0 0 20px hsl(var(--glow-emerald)),
+      0 0 40px hsl(var(--glow-emerald));
+  }
+
+  .animate-shimmer {
+    animation: shimmer 3s ease-in-out infinite;
+    background-size: 200% 100%;
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+}
+
+@keyframes gradient-x {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-x {
+  animation: gradient-x 3s ease infinite;
+  background-size: 200% auto;
+}
+
+/* Add to your global.css for smooth animations */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+html {
+  scroll-behavior: smooth; /* Keep this for normal mouse scrolling */
+}
+
+#contact {
+  scroll-margin-top: 80px; /* Adjust to your header height */
+}
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+.animate-gradient {
+  animation: gradient 8s linear infinite;
 }
