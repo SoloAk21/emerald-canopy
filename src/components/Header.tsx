@@ -6,8 +6,9 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Umbrella, Menu, X, Calendar, ArrowRight } from "lucide-react";
-import LanguageToggle from "./LanguageToggle";
+
 import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageToggle from "./common/LanguageToggle";
 
 const NAV_LINKS = [
   { key: "Shield", id: "services", labelKey: "nav.shield" },
