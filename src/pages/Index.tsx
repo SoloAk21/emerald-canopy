@@ -1,34 +1,20 @@
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
+import VideoModal from "@/components/layout/layout/VideoModal";
+import Contact from "@/components/sections/Contact";
+import FeaturedWork from "@/components/sections/FeaturedWork";
+import Hero from "@/components/sections/Hero";
+import ProvenTrackRecord from "@/components/sections/ProvenTrackRecord";
+import Services from "@/components/sections/Services";
+import Testimonials from "@/components/sections/Testimonials";
+import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import { useState } from "react";
-import Hero from "@/components/Hero";
-import Header from "@/components/Header";
-import Services from "@/components/Services";
-import ProvenTrackRecord from "@/components/ProvenTrackRecord";
-import WhyChooseUs from "@/components/WhyChooseUs";
-import FeaturedWork from "@/components/FeaturedWork";
-import Testimonials from "@/components/Testimonials";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
-import VideoModal from "@/components/VideoModal";
 
 const Index = () => {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   const handleVideoClick = () => {
     setIsVideoModalOpen(true);
-  };
-
-  const handleContactClick = () => {
-    const contactSection = document.getElementById("contact");
-    if (!contactSection) return;
-
-    const originalScrollBehavior =
-      document.documentElement.style.scrollBehavior;
-    document.documentElement.style.scrollBehavior = "auto";
-    contactSection.scrollIntoView({ behavior: "instant", block: "start" });
-
-    setTimeout(() => {
-      document.documentElement.style.scrollBehavior = originalScrollBehavior;
-    }, 50);
   };
 
   return (
@@ -42,13 +28,9 @@ const Index = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="absolute inset-0 z-[1] bg-black/70"></div>
-
+      <div className="absolute inset-0 z-[1] bg-black/50"></div>
       <Header />
-      <Hero
-        onContactClick={handleContactClick}
-        onVideoClick={handleVideoClick}
-      />
+      <Hero onVideoClick={handleVideoClick} />
 
       <section id="services">
         <Services />
@@ -62,8 +44,9 @@ const Index = () => {
       <section id="featured-work">
         <FeaturedWork />
       </section>
-
-      <Testimonials />
+      <section id="testimonials">
+        <Testimonials />
+      </section>
 
       <section id="contact">
         <Contact />
