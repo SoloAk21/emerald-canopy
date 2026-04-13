@@ -304,7 +304,7 @@ function MinimalButton({ onClick }: { onClick: () => void }) {
   const { t } = useLanguage();
   return (
     <motion.button
-      className="hidden lg:flex items-center gap-2 px-6 py-2.5 text-sm font-bold tracking-wide group"
+      className="hidden lg:flex items-center gap-2 px-6 py-2.5 text-sm font-light tracking-wide group"
       style={{
         borderRadius: 0,
         fontFamily: "'Nokia', system-ui, sans-serif",
