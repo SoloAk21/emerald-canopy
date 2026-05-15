@@ -31,13 +31,12 @@ export default function Hero({ onVideoClick }: HeroProps) {
         <motion.h1
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-[2.1rem] sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-[-0.04em] leading-[0.95]"
+          className="text-5xl sm:text-7xl md:text-8xl lg:text-8xl font-bold tracking-[-0.04em] "
         >
-          <span className="text-gradient animate-gradient block whitespace-pre-line">
+          <span className="text-gradient tracking-tighteranimate-gradient block whitespace-pre-line py-4 overflow-visible">
             {t("hero.title")}
           </span>
         </motion.h1>
-
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -46,7 +45,6 @@ export default function Hero({ onVideoClick }: HeroProps) {
         >
           {t("hero.subtitle")}
         </motion.p>
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

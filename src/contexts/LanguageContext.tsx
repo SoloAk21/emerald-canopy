@@ -15,11 +15,12 @@ const LanguageContext = createContext<LanguageContextType | undefined>(
 const translations: Record<Language, Record<string, string>> = {
   en: {
     // Header & Navigation
-    "nav.shield": "Security",
-    "nav.amplify": "Growth",
-    "nav.insights": "Data",
-    "nav.work": "Projects",
-    "nav.connect": "Contact",
+    "nav.services": "Services",
+    "nav.work": "Work",
+    "nav.about": "About",
+    "nav.projects": "Projects",
+    "nav.contact": "Contact",
+
     "cta.strategy_call": "Start a Project",
 
     // Hero Section
@@ -190,11 +191,11 @@ const translations: Record<Language, Record<string, string>> = {
 
   am: {
     // Header & Navigation
-    "nav.shield": "ጥበቃ",
-    "nav.amplify": "እድገት",
-    "nav.insights": "ትንተና",
-    "nav.work": "ስራዎች",
-    "nav.connect": "ያግኙን",
+    "nav.services": "አገልግሎቶች", // Services
+    "nav.work": "ስራ", // Work
+    "nav.about": "ስለ እኛ", // About Us
+    "nav.projects": "ፕሮጀክቶች", // Projects
+    "nav.contact": "አግኙን", // Contact Us
     "cta.strategy_call": "ፕሮጀክት ይጀምሩ",
 
     // Hero Section

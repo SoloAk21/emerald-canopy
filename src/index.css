@@ -85,7 +85,62 @@
 #track-record,
 #why-choose-us,
 #featured-work,
-#contact {
+#contact,
+#testimonials,
+#footer {
   scroll-margin-top: 100px;
   z-index: 10;
+}
+
+/* Additional noise and texture effects */
+.bg-radial-gradient {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+}
+
+/* Subtle scanning effect on hover */
+.hover-scan {
+  position: relative;
+  overflow: hidden;
+}
+
+.hover-scan::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: left 0.5s ease;
+}
+
+.hover-scan:hover::after {
+  left: 150%;
+}
+
+/* Glass morphism with noise */
+.glass-noise {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.02);
+  position: relative;
+}
+
+.glass-noise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  border-radius: inherit;
 }
